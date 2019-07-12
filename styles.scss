@@ -10,25 +10,30 @@
   height: 500px;
 }
 
-.wall{
-  background-color: grey;
+.tile{
   width: (100%/18);
   height: (100%/18);
+  border: 1px solid white;
+  transition: 0.2s;
 }
 
-.blank{
-  width: (100%/18);
-  height: (100%/18);
+.wall{
+  background-color: grey;
+
 }
 
 .pellet{
   background-color: darkgreen;
-  width: (100%/18);
-  height: (100%/18);
+  border-radius: 50%;
+}
+
+.powerup{
+  background-color: cyan;
+  border-radius: 50%;
 }
 
 .pacman{
   background-color: yellow;
-  width: (100%/18);
-  height: (100%/18);
+  border-radius: 50%;
+
 }

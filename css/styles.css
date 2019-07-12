@@ -7,23 +7,25 @@
   width: 500px;
   height: 500px; }
 
-.wall {
-  background-color: grey;
+.tile {
   width: 5.5555555556%;
-  height: 5.5555555556%; }
+  height: 5.5555555556%;
+  border: 1px solid white;
+  transition: 0.2s; }
 
-.blank {
-  width: 5.5555555556%;
-  height: 5.5555555556%; }
+.wall {
+  background-color: grey; }
 
 .pellet {
   background-color: darkgreen;
-  width: 5.5555555556%;
-  height: 5.5555555556%; }
+  border-radius: 50%; }
+
+.powerup {
+  background-color: cyan;
+  border-radius: 50%; }
 
 .pacman {
   background-color: yellow;
-  width: 5.5555555556%;
-  height: 5.5555555556%; }
+  border-radius: 50%; }
 
 /*# sourceMappingURL=styles.css.map */
