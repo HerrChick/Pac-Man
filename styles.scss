@@ -1,0 +1,34 @@
+*{
+  box-sizing: border-box;
+
+}
+
+.grid{
+  display: flex;
+  flex-wrap: wrap;
+  width: 500px;
+  height: 500px;
+}
+
+.wall{
+  background-color: grey;
+  width: (100%/18);
+  height: (100%/18);
+}
+
+.blank{
+  width: (100%/18);
+  height: (100%/18);
+}
+
+.pellet{
+  background-color: darkgreen;
+  width: (100%/18);
+  height: (100%/18);
+}
+
+.pacman{
+  background-color: yellow;
+  width: (100%/18);
+  height: (100%/18);
+}

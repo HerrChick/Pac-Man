@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box; }
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 500px;
+  height: 500px; }
+
+.wall {
+  background-color: grey;
+  width: 5.5555555556%;
+  height: 5.5555555556%; }
+
+.blank {
+  width: 5.5555555556%;
+  height: 5.5555555556%; }
+
+.pellet {
+  background-color: darkgreen;
+  width: 5.5555555556%;
+  height: 5.5555555556%; }
+
+.pacman {
+  background-color: yellow;
+  width: 5.5555555556%;
+  height: 5.5555555556%; }
+
+/*# sourceMappingURL=styles.css.map */
