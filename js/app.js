@@ -3,6 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridWidth = 18
   const grid = document.querySelector('.grid')
   let pacmanPosition = 18
+  let ghostPosition = 84
+
+
+
+
+
+
+
 
 
 
@@ -87,11 +95,50 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.children[pacmanPosition].classList.add('pacman')
   }
 
+  function ghostCollision(){
+
+    const wallLeft = grid.children[ghostPosition - 1].classList.contains('wall')
+    const wallAbove = grid.children[ghostPosition - gridWidth].classList.contains('wall')
+    const wallBelow = grid.children[ghostPosition + gridWidth].classList.contains('wall')
+    const wallRight = grid.children[ghostPosition + 1].classList.contains('wall')
+
+    const collisionMovementLogic =
+    // array containing ghost movement, left, right, up, down
+      [(ghostPosition - 1), (ghostPosition + 1), (ghostPosition - gridWidth), (ghostPosition - gridWidth)]
+
+    grid.children[ghostPosition].classList.remove('ghost')
+// chooses directions to prevent ghosts being stuck in walls
+    if (wallAbove || wallBelow ){
+      ghostPosition = collisionMovementLogic[Math.round(Math.random())]
+    }else if (wallLeft && wallBelow){
+      ghostPosition = collisionMovementLogic[Math.round(Math.random())+1]
+    }else if (wallAbove && wallRight){
+      ghostPosition = collisionMovementLogic[
+    }else if (wallAbove && wallLeft){
+  }
+
+
+
+
+
+
+    grid.children[ghostPosition].classList.add('ghost')
+
+
+
+  }
+
+
 
 
   drawGameBoard()
 
+
+
   document.addEventListener('keyup', movePacman)
+  setInterval(ghostCollision, 1000)
+
+
 
 
 
