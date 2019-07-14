@@ -5,7 +5,9 @@
   display: flex;
   flex-wrap: wrap;
   width: 500px;
-  height: 500px; }
+  height: 500px;
+  font-family: arial;
+  font-size: 8px; }
 
 .tile {
   width: 5.5555555556%;
