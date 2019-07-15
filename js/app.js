@@ -6,7 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let pacmanDirection = ''
   let ghostPosition = 84
   let ghostDistance = 0
-  let ghostPrevPosition = ghostPosition
+
+  let blinky = 80
+  let pinky = 34
+  let inky = 289
+  let clyde = 304
+  const ghosts = [blinky, pinky, inky, clyde]
+  const ghostPrevPosition = [blinky, pinky, inky, clyde]
 
 
 
@@ -57,8 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }else if(gameBoard[i] === 3){
         grid.innerHTML += '<div class= \'tile powerup\'>'+i+'</div>'
       }
-    grid.children[ghostPosition].classList.add('ghost')
-
   }
 
 
@@ -107,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.children[pacmanPosition].classList.remove('pellet')
     }
     grid.children[pacmanPosition].classList.add('pacman')
-    console.log(pacmanDirection)
   }
 
 
@@ -145,64 +148,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    console.log(dx, dy)
-    console.log((dx^2)+(dy^2))
-
     return (((dx^2)+(dy^2)))
 
   }
 
-  // function ghostCollision(){
-  //
-  // const wallLeft = grid.children[ghostPosition - 1].classList.contains('wall')
-  // const wallAbove = grid.children[ghostPosition - gridWidth].classList.contains('wall')
-  // const wallBelow = grid.children[ghostPosition + gridWidth].classList.contains('wall')
-  // const wallRight = grid.children[ghostPosition + 1].classList.contains('wall')
-  //
-  //
-  //
-  //   grid.children[ghostPosition].classList.remove('ghost')
-  //   // chooses directions to prevent ghosts being stuck in walls
-  //   if (wallAbove || wallBelow ){
-  //     ghostPosition = collisionMovementLogic[Math.round(Math.random())]
-  //     //   }else if (wallLeft && wallBelow){
-  //     //     ghostPosition = collisionMovementLogic[Math.round(Math.random())+1]
-  //     //   }else if (wallAbove && wallRight){
-  //     //     ghostPosition = collisionMovementLogic[
-  //     //   }else if (wallAbove && wallLeft){
-  //   }
-  //
-  //   grid.children[ghostPosition].classList.add('ghost')
-  //
-  // }
-
-
-  // const collisionMovementLogic =
-  // // array containing ghost movement, left, right, up, down
-  //   [(ghostPosition - 1), (ghostPosition + 1), (ghostPosition - gridWidth), (ghostPosition - gridWidth)]
-
-
   function ghostMovement(){
 
-    const collisionMovementLogic =
-    // array containing ghost movement, left, right, up, down
-      [(ghostPosition - 1), (ghostPosition + 1), (ghostPosition - gridWidth), (ghostPosition + gridWidth)]
 
-    const ghostNextMove = []
+    for(let ghost = 0; ghost<ghosts.length; ghost++){
 
-    grid.children[ghostPosition].classList.remove('ghost')
-    for (let i = 0; i < collisionMovementLogic.length; i++)
-      if(grid.children[collisionMovementLogic[i]].classList.contains('wall') || collisionMovementLogic[i] === ghostPrevPosition){
-        ghostNextMove.push(Infinity)
-      } else if(grid.children[collisionMovementLogic[i]].classList.contains('tile')){
-        ghostNextMove.push(getDyDx(collisionMovementLogic[i]))
+      // array containing ghost movement, left, right, up, down
+      const collisionMovementLogic = [(ghosts[ghost] - 1), (ghosts[ghost] + 1), (ghosts[ghost] - gridWidth), (ghosts[ghost] + gridWidth)]
+
+      const ghostNextMove = []
+
+      grid.children[ghosts[ghost]].classList.remove('ghost')
+
+      for (let i = 0; i < collisionMovementLogic.length; i++){
+
+        if(grid.children[collisionMovementLogic[i]].classList.contains('wall') || collisionMovementLogic[i] === ghostPrevPosition[ghost]){
+          ghostNextMove.push(Infinity)
+        } else if(grid.children[collisionMovementLogic[i]].classList.contains('tile')){
+          ghostNextMove.push(getDyDx(collisionMovementLogic[i]))
+        }
+
       }
-    ghostPrevPosition = ghostPosition
-    const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
-    ghostPosition = collisionMovementLogic[ghostNextMove.indexOf(shortest)]
-
-    grid.children[ghostPosition].classList.add('ghost')
+      ghostPrevPosition[ghost] = ghosts[ghost]
+      const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
+      ghosts[ghost] = collisionMovementLogic[ghostNextMove.indexOf(shortest)]
+      console.log(ghostNextMove)
+      grid.children[ghosts[ghost]].classList.add('ghost')
+    }
   }
+
 
   drawGameBoard()
 
