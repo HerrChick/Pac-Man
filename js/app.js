@@ -1,379 +1,463 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  const gridWidth = 18
-  const grid = document.querySelector('.grid')
-  const statusBoard = document.querySelector('.status')
-  let pacmanPosition = 19
-  let pacmanDirection = ''
-  let ghostDistance = 0
-  let score = 0
-  let lives = 2
-  let inRunPhase = false
-
-  let blinky = {position: 80, eaten: false}
-  let pinky = {position: 34, eaten: false}
-  let inky = {position: 289, eaten: true}
-  let clyde = {position: 304, eaten: false}
-  let ghosts = [blinky, pinky, inky, clyde]
-  let ghostPrevPosition = [blinky, pinky, inky, clyde]
-  let killedGhosts = []
-  let ghostsTimer = null
-  let runTimer = null
-
-
-
-
-
-
-
-
-  // variable that defines the game board
-  const gameBoard =
+  const level1 =
 
   // 0 = blank
   // 1 = wall
   // 2 = pellet
+  // 3 = home
 
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    1,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,3,1,
-    1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,
-    1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,
-    1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
-    1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,
-    1,2,2,2,2,2,1,0,0,0,0,1,2,2,2,2,2,1,
-    1,1,1,1,1,2,1,0,1,1,0,1,2,1,1,1,1,1,
-    2,2,2,2,2,2,0,0,1,1,0,0,2,2,2,2,2,2,
-    1,1,1,1,1,2,1,0,0,0,0,1,2,1,1,1,1,1,
-    1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1,
-    1,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,1,
-    1,2,1,0,1,2,1,2,1,1,2,1,2,1,0,1,2,1,
-    1,2,1,0,1,2,1,2,2,2,2,1,2,1,0,1,2,1,
-    1,2,2,2,2,2,1,1,2,2,1,1,2,2,2,2,2,1,
-    1,2,1,1,1,1,1,1,2,2,1,1,1,1,1,1,2,1,
-    1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,1,
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+  [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,2,2,3,2,2,2,2,1,1,2,2,2,2,2,2,3,1],
+    [1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1],
+    [1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1],
+    [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,2,1,1,1,1,1,1,0,0,1,1,1,1,1,1,2,1],
+    [1,2,2,2,2,2,1,1,4,4,1,1,2,2,2,2,2,1],
+    [1,1,1,1,1,2,1,1,0,0,1,1,2,1,1,1,1,1],
+    [1,1,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1,1],
+    [1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1],
+    [1,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1],
+    [1,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,1],
+    [1,2,1,0,1,2,1,2,1,1,2,1,2,1,0,1,2,1],
+    [1,2,1,0,1,2,1,2,2,2,2,1,2,1,0,1,2,1],
+    [1,2,2,2,2,2,1,2,1,1,2,1,2,2,2,2,2,1],
+    [1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1],
+    [1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
 
-  // function that draws the gameboard
 
-  function drawGameBoard(){
-    for (let i = 0; i < gameBoard.length; i++)
 
-      if(gameBoard[i] === 1){
-        grid.innerHTML += '<div class= \'tile wall\'>'+i+'</div>'
-      } else if (gameBoard[i] === 0){
-        grid.innerHTML += '<div class= \'tile\'>'+i+'</div>'
-      }else if (gameBoard[i] === 2){
-        grid.innerHTML += '<div class= \'tile pellet\'>'+i+'</div>'
-      }else if(gameBoard[i] === 3){
-        grid.innerHTML += '<div class= \'tile powerup\'>'+i+'</div>'
+  const gameBoard = []
+  const gridWidth = 18
+  const grid = document.querySelector('.grid')
+  const statusBoard = document.querySelector('.status')
+  let isPlaying = false
+  let pelletcount = 0
+
+
+  function generateDivs(){
+    for (let y = 0; y < gridWidth; y++){
+      const rows = []
+      for(let x = 0; x < gridWidth; x++){
+        const tile = document.createElement('div')
+        tile.classList.add('tile')
+        grid.appendChild(tile)
+        rows.push(tile)
       }
+      gameBoard.push(rows)
+    }
   }
 
 
 
-  function getDyDx(pos, eaten){
+  function drawGameBoard(){
+    for (let x= 0; x < gameBoard.length; x++){
+      const levelRow = level1[x]
+      const divRow = gameBoard[x]
+      for (let y = 0; y < levelRow.length; y++){
+
+        if(levelRow[y] === 1){
+          divRow[y].classList.add('wall')
+        } else if (levelRow[y] === 0){
+          divRow[y].classList.add('tile')
+        }else if (levelRow[y] === 2){
+          divRow[y].classList.add('pellet')
+        }else if(levelRow[y] === 3){
+          divRow[y].classList.add('powerup')
+        }else if(levelRow[y] === 4){
+          divRow[y].classList.add('home')
+        }
+      }
+    }
+  }
+
+  const pacman = {x: 8, y: 4, direction: '', phase: 'normal'}
+  // let pacmanPosition = (gameBoard[pacman.y][pacman.x])
+  let score = 0
+  let lives = 3
+
+  const blinky = {x: 5, y: 6, eaten: false}
+  const pinky = {x: 12, y: 6, eaten: false}
+  const inky = {x: 5, y: 11, eaten: false}
+  const clyde = {x: 12, y: 11, eaten: false}
+  const ghosts = [blinky, pinky, inky, clyde]
+  const ghostPrevPositionx = [blinky, pinky, inky, clyde]
+  const ghostPrevPositiony = [blinky, pinky, inky, clyde]
+  let ghostsTimer = null
+  let collisionTimer = null
+
+  function startingPositions(){
+    pacman.x = 8
+    pacman.y = 4
+    ghosts[0].x = 5
+    ghosts[0].y = 6
+    ghosts[0].eaten = false
+    ghosts[1].x= 12
+    ghosts[1].y = 6
+    ghosts[1].eaten = false
+    ghosts[2].x = 5
+    ghosts[2].y = 11
+    ghosts[2].eaten = false
+    ghosts[3].x = 12
+    ghosts[3].y = 11
+    ghosts[3].eaten = false
+  }
+
+  function getDyDx(posy, posx, targety, targetx){
 
     let dx = 0
     let dy = 0
-    let relativePosition = 0
 
-    if(eaten === false){
-
-      if(pacmanPosition < pos){
-        relativePosition =  pos - pacmanPosition
-        if ((pacmanPosition % gridWidth) < (pos % gridWidth)){
-          dx = (relativePosition % gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth))
-        }else{
-          dx = Math.abs((relativePosition % gridWidth) - gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth)) + 1
-        }
-      }
-
-
-      if(pacmanPosition > pos){
-        relativePosition = pacmanPosition - pos
-        if ((pacmanPosition % gridWidth) > (pos % gridWidth)){
-          dx = (relativePosition % gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth))
-        }else{
-          dx = Math.abs((relativePosition % gridWidth) - gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth)) + 1
-        }
-      }
+    if(posx < targetx){
+      dx = (targetx - posx)
+    }else if(posx > targetx){
+      dx = (posx - targetx)
     }
 
-    if(eaten === true){
-      if(0 < pos){
-        relativePosition =  pos - 0
-        if ((0 % gridWidth) < (pos % gridWidth)){
-          dx = (relativePosition % gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth))
-        }else{
-          dx = Math.abs((relativePosition % gridWidth) - gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth)) + 1
-        }
-      }
-
-
-      if(0 > pos){
-        relativePosition = 0 - pos
-        if ((0 % gridWidth) > (pos % gridWidth)){
-          dx = (relativePosition % gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth))
-        }else{
-          dx = Math.abs((relativePosition % gridWidth) - gridWidth)
-          dy = (Math.floor(relativePosition / gridWidth)) + 1
-        }
-      }
+    if(posy < targety){
+      dy = (targety - posy)
+    }else if((posy > targety)){
+      dy = (posy - targety)
     }
 
-    // if((pacmanPosition % gridWidth) === (pos % gridWidth)){
-    //   dy = 0
-    // }
-    // if(Math.floor(pacmanPosition / gridWidth) === Math.floor(pos / gridWidth)){
-    //   dx = 0
-    // }
 
-    if(dx === 18){
-      dx = 0
-    }
-    if(dy === 18){
-      dy = 0
-    }
-    //
-    // if(dx === 0){
-    //   if(pacmanPosition>pos){
-    //     return 0.1
-    //   }else if (pacmanPosition<pos){
-    //     return 0.1
-    //   }
-    // }
-    // if(dy === 0){
-    //   if(pacmanPosition>pos){
-    //     return 0.1
-    //   }else if (pacmanPosition<pos){
-    //     return 0.1
-    //   }
-    // }
-
-
-    return ((Math.sqrt(dx^2)+(dy^2)))
-
-
+    return ((dx**2)+(dy**2))
   }
 
   function ghostMovement(){
-
     for(let ghost = 0; ghost<ghosts.length; ghost++){
 
-      if(ghosts[ghost].eaten === false){
-
-        // array containing ghost movement, left, right, up, down
-        const collisionMovementLogic = [(ghosts[ghost].position - 1), (ghosts[ghost].position + 1), (ghosts[ghost].position - gridWidth), (ghosts[ghost].position + gridWidth)]
-
-        const ghostNextMove = []
-
-        grid.children[ghosts[ghost].position].classList.remove('run')
-        grid.children[ghosts[ghost].position].classList.remove('ghost')
-        grid.children[ghosts[ghost].position].classList.remove('eyes')
-
-        for (let i = 0; i < collisionMovementLogic.length; i++){
-
-          if(grid.children[collisionMovementLogic[i]].classList.contains('wall') || collisionMovementLogic[i] === ghostPrevPosition[ghost]){
-            ghostNextMove.push(Infinity)
-          } else if(grid.children[collisionMovementLogic[i]].classList.contains('tile')){
-            ghostNextMove.push(getDyDx(collisionMovementLogic[i], ghosts[ghost].eaten))
-          }
-
-        }
-        ghostPrevPosition[ghost] = ghosts[ghost].position
-        const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
-        ghosts[ghost].position = collisionMovementLogic[ghostNextMove.indexOf(shortest)]
-
-        grid.children[ghosts[ghost].position].classList.add('ghost')
-      }
-
-      if(ghosts[ghost].eaten === true){
-        // array containing ghost movement, left, right, up, down
-        const collisionMovementLogic = [(ghosts[ghost].position - 1), (ghosts[ghost].position + 1), (ghosts[ghost].position - gridWidth), (ghosts[ghost].position + gridWidth)]
-
-        const ghostNextMove = []
-
-        grid.children[ghosts[ghost].position].classList.remove('run')
-        grid.children[ghosts[ghost].position].classList.remove('ghost')
-        grid.children[ghosts[ghost].position].classList.remove('eyes')
-
-        for (let i = 0; i < collisionMovementLogic.length; i++){
-
-          if(grid.children[collisionMovementLogic[i]].classList.contains('wall') || collisionMovementLogic[i] === ghostPrevPosition[ghost]){
-            ghostNextMove.push(Infinity)
-          } else if(grid.children[collisionMovementLogic[i]].classList.contains('tile')){
-            ghostNextMove.push(getDyDx(collisionMovementLogic[i], ghosts[ghost].eaten))
-          }
-
-        }
-        ghostPrevPosition[ghost] = ghosts[ghost].position
-        const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
-        ghosts[ghost].position = collisionMovementLogic[ghostNextMove.indexOf(shortest)]
-        grid.children[ghosts[ghost].position].classList.add('eyes')
-      }
-
-      if(grid.children[pacmanPosition].classList.contains('powerup')){
-        grid.children[pacmanPosition].classList.remove('powerup')
-        clearInterval(ghostsTimer)
-        runTimer = setInterval(powerUp, 750)
-
-        setTimeout(() => {
-          clearInterval(runTimer)
-        }, 5000)
-        setTimeout(() => {
-          ghostsTimer = setInterval(ghostMovement, 500)
-        }, 5001)
-
-
-      }
-    }
-  }
-
-  function powerUp(){
-    for(let ghost = 0; ghost<ghosts.length; ghost++){
 
       // array containing ghost movement, left, right, up, down
-      const collisionMovementLogic = [(ghosts[ghost].position - 1), (ghosts[ghost].position + 1), (ghosts[ghost].position - gridWidth), (ghosts[ghost].position + gridWidth)]
+      const collisionMovementLogicy = [
+        ghosts[ghost].y,
+        ghosts[ghost].y,
+        ghosts[ghost].y - 1,
+        ghosts[ghost].y + 1
+      ]
+
+      const collisionMovementLogicx = [
+        ghosts[ghost].x - 1,
+        ghosts[ghost].x + 1,
+        ghosts[ghost].x,
+        ghosts[ghost].x
+      ]
 
       const ghostNextMove = []
 
-      grid.children[ghosts[ghost].position].classList.remove('ghost')
-      grid.children[ghosts[ghost].position].classList.remove('run')
-      grid.children[ghosts[ghost].position].classList.remove('eyes')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('run')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('ghost')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('eyes')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('blinky')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('pinky')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('inky')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('clyde')
+
+      if(ghosts[ghost].eaten === false){
+        if(pacman.phase === 'normal'){
+
+          for (let i = 0; i < collisionMovementLogicy.length; i++){
+
+            if(ghost === 0){
+              if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('wall') || (collisionMovementLogicy[i] === ghostPrevPositiony[ghost] && collisionMovementLogicx[i] === ghostPrevPositionx[ghost])) {
+                ghostNextMove.push(Infinity)
+              } else if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('tile')){
+                ghostNextMove.push(getDyDx(collisionMovementLogicy[i],collisionMovementLogicx[i], pacman.y, pacman.x))
+              }
+            }else if(ghost === 1){
+              if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('wall') || (collisionMovementLogicy[i] === ghostPrevPositiony[ghost] && collisionMovementLogicx[i] === ghostPrevPositionx[ghost])) {
+                ghostNextMove.push(Infinity)
+              } else if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('tile')){
+                ghostNextMove.push(getDyDx(collisionMovementLogicy[i],collisionMovementLogicx[i], pacman.y - 2, pacman.x - 2))
+              }
+            }else if(ghost === 2){
+              if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('wall') || (collisionMovementLogicy[i] === ghostPrevPositiony[ghost] && collisionMovementLogicx[i] === ghostPrevPositionx[ghost])) {
+                ghostNextMove.push(Infinity)
+              } else if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('tile')){
+                ghostNextMove.push(getDyDx(collisionMovementLogicy[i],collisionMovementLogicx[i], pacman.y + 5, pacman.x + 2))
+              }
+            }else if(ghost === 3){
+              if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('wall') || (collisionMovementLogicy[i] === ghostPrevPositiony[ghost] && collisionMovementLogicx[i] === ghostPrevPositionx[ghost])) {
+                ghostNextMove.push(Infinity)
+              } else if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('tile')){
+                ghostNextMove.push(getDyDx(collisionMovementLogicy[i],collisionMovementLogicx[i], pacman.y - 5, pacman.x - 2))
+              }
+            }
+
+          }
+          ghostPrevPositiony[ghost] = ghosts[ghost].y
+          ghostPrevPositionx[ghost] = ghosts[ghost].x
+          const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
+          ghosts[ghost].x = collisionMovementLogicx[ghostNextMove.indexOf(shortest)]
+          ghosts[ghost].y = collisionMovementLogicy[ghostNextMove.indexOf(shortest)]
 
 
-      for (let i = 0; i < collisionMovementLogic.length; i++){
-
-        if(grid.children[collisionMovementLogic[i]].classList.contains('wall') || collisionMovementLogic[i] === ghostPrevPosition[ghost]){
-          ghostNextMove.push(0)
-        } else if(grid.children[collisionMovementLogic[i]].classList.contains('tile')){
-          ghostNextMove.push(getDyDx(collisionMovementLogic[i], ghosts[ghost].eaten))
-        }
-
-      }
-      ghostPrevPosition[ghost] = ghosts[ghost].position
-      const shortest = ghostNextMove.reduce((a, b) => Math.max(a, b))
-      ghosts[ghost].position = collisionMovementLogic[ghostNextMove.indexOf(shortest)]
-
-      grid.children[ghosts[ghost].position].classList.add('run')
-
-      if(grid.children[ghosts[ghost].position].classList.contains('pacman')) {
-        grid.children[ghosts[ghost].position].classList.remove('run')
-        grid.children[ghosts[ghost].position].classList.remove('ghost')
-        grid.children[ghosts[ghost].position].classList.add('eyes')
-        ghosts[ghost].eaten = true
-        score += 400
-        document.querySelector('.score').innerText = score
-
-      }
-
-    }
-  }
-
-  function returnHome(){
-    for(let ghost = 0; ghost<ghosts.length; ghost++){
-
-      if(ghosts[ghost].eaten === true){
-      // array containing ghost movement, left, right, up, down
-        const collisionMovementLogic = [(ghosts[ghost].position - 1), (ghosts[ghost].position + 1), (ghosts[ghost].position - gridWidth), (ghosts[ghost].position + gridWidth)]
-
-        const ghostNextMove = []
-
-        grid.children[ghosts[ghost].position].classList.remove('ghost')
-        grid.children[ghosts[ghost].position].classList.remove('run')
-        grid.children[ghosts[ghost].position].classList.remove('eyes')
-
-        for (let i = 0; i < collisionMovementLogic.length; i++){
-
-          if(grid.children[collisionMovementLogic[i]].classList.contains('wall') || collisionMovementLogic[i] === ghostPrevPosition[ghost]){
-            ghostNextMove.push(Infinity)
-          } else if(grid.children[collisionMovementLogic[i]].classList.contains('tile')){
-            ghostNextMove.push(getDyDx(collisionMovementLogic[i], ghosts[ghost].eaten))
+          if(ghost === 0){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('blinky')
+          }else if(ghost === 1){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('pinky')
+          }else if(ghost === 2){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('inky')
+          }else if(ghost === 3){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('clyde')
           }
 
         }
-        ghostPrevPosition[ghost] = ghosts[ghost].position
-        const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
-        ghosts[ghost].position = collisionMovementLogic[ghostNextMove.indexOf(shortest)]
 
-        grid.children[ghosts[ghost].position].classList.add('eyes')
+        if(pacman.phase === 'hunt'){
+
+          for (let i = 0; i < collisionMovementLogicy.length; i++){
+
+
+            if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('wall') || (collisionMovementLogicy[i] === ghostPrevPositiony[ghost] && collisionMovementLogicx[i] === ghostPrevPositionx[ghost])) {
+              ghostNextMove.push(0)
+            } else if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('tile')){
+              ghostNextMove.push(getDyDx(collisionMovementLogicy[i],collisionMovementLogicx[i], pacman.y, pacman.x))
+            }
+
+          }
+          ghostPrevPositiony[ghost] = ghosts[ghost].y
+          ghostPrevPositionx[ghost] = ghosts[ghost].x
+          const shortest = ghostNextMove.reduce((a, b) => Math.max(a, b))
+          ghosts[ghost].x = collisionMovementLogicx[ghostNextMove.indexOf(shortest)]
+          ghosts[ghost].y = collisionMovementLogicy[ghostNextMove.indexOf(shortest)]
+
+          gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('run')
+          if(ghost === 0){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('blinky')
+          }else if(ghost === 1){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('pinky')
+          }else if(ghost === 2){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('inky')
+          }else if(ghost === 3){
+            gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('clyde')
+          }
+
+        }
+      }
+      if(ghosts[ghost].eaten === true){
+
+        for (let i = 0; i < collisionMovementLogicy.length; i++){
+
+
+          if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('wall') || (collisionMovementLogicy[i] === ghostPrevPositiony[ghost] && collisionMovementLogicx[i] === ghostPrevPositionx[ghost])) {
+            ghostNextMove.push(Infinity)
+          } else if(gameBoard[collisionMovementLogicy[i]][collisionMovementLogicx[i]].classList.contains('tile')){
+            ghostNextMove.push(getDyDx(collisionMovementLogicy[i],collisionMovementLogicx[i], 6, 8))
+          }
+
+        }
+        ghostPrevPositiony[ghost] = ghosts[ghost].y
+        ghostPrevPositionx[ghost] = ghosts[ghost].x
+        const shortest = ghostNextMove.reduce((a, b) => Math.min(a, b))
+        ghosts[ghost].x = collisionMovementLogicx[ghostNextMove.indexOf(shortest)]
+        ghosts[ghost].y = collisionMovementLogicy[ghostNextMove.indexOf(shortest)]
+        gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.add('eyes')
+
+        if(gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.contains('home')){
+          ghosts[ghost].eaten = false
+        }
 
       }
     }
   }
 
+  function setHunt(){
+    pacman.phase = 'normal'
+  }
+
+
   // function that moves pacman with respect to keypresses. also includes collision.
   function movePacman(e) {
+    if(!isPlaying) return false
 
-
-    grid.children[pacmanPosition].classList.remove('pacman')
+    gameBoard[pacman.y][pacman.x].classList.remove('pacmanleft')
+    gameBoard[pacman.y][pacman.x].classList.remove('pacmanright')
+    gameBoard[pacman.y][pacman.x].classList.remove('pacmanup')
+    gameBoard[pacman.y][pacman.x].classList.remove('pacmandown')
 
     switch(e.keyCode) {
       // moving left
       case 37:
-        if (grid.children[pacmanPosition - 1].classList.contains('wall')) pacmanPosition += 0
-        else if (pacmanPosition % gridWidth !== 0){
-          pacmanPosition -= 1
-          pacmanDirection = 'left'
+        if (gameBoard[pacman.y][pacman.x - 1].classList.contains('wall')) pacman.x += 0
+        else{
+          pacman.x -= 1
+          pacman.direction = 'left'
         }
         break
         // moving up
       case 38:
-        if (grid.children[pacmanPosition - gridWidth].classList.contains('wall')) pacmanPosition += 0
-        else if(pacmanPosition - gridWidth >= 0){
-          pacmanPosition -= gridWidth
-          pacmanDirection = 'up'
+        if (gameBoard[pacman.y - 1][pacman.x].classList.contains('wall')) pacman.y += 0
+        else{
+          pacman.y -= 1
+          pacman.direction = 'up'
         }
         break
         // moving right
       case 39:
-        if (grid.children[pacmanPosition + 1].classList.contains('wall')) pacmanPosition += 0
-        else if(pacmanPosition % gridWidth < gridWidth - 1){
-          pacmanPosition += 1
-          pacmanDirection = 'right'
+        if (gameBoard[pacman.y][pacman.x + 1].classList.contains('wall')) pacman.x += 0
+        else{
+          pacman.x += 1
+          pacman.direction = 'right'
         }
         break
         // moving down
       case 40:
-        if (grid.children[pacmanPosition + gridWidth].classList.contains('wall')) pacmanPosition += 0
-        else if(pacmanPosition + gridWidth < gridWidth * gridWidth){
-          pacmanPosition += gridWidth
-          pacmanDirection = 'down'
+        if (gameBoard[pacman.y + 1][pacman.x].classList.contains('wall')) pacman.y += 0
+        else{
+          pacman.y += 1
+          pacman.direction = 'down'
         }
         break
 
     }
 
-    if(grid.children[pacmanPosition].classList.contains('pellet')) {
-      grid.children[pacmanPosition].classList.remove('pellet')
+    if(gameBoard[pacman.y][pacman.x].classList.contains('pellet')) {
+      gameBoard[pacman.y][pacman.x].classList.remove('pellet')
       score += 100
       document.querySelector('.score').innerText = score
     }
 
 
+    if(gameBoard[pacman.y][pacman.x].classList.contains('powerup')) {
+      gameBoard[pacman.y][pacman.x].classList.remove('powerup')
+      pacman.phase = 'hunt'
 
-    grid.children[pacmanPosition].classList.add('pacman')
+      setTimeout(setHunt, 7000)
+    }
+
+    if(pacman.direction === 'left'){
+      gameBoard[pacman.y][pacman.x].classList.add('pacmanleft')
+    }else if(pacman.direction === 'right'){
+      gameBoard[pacman.y][pacman.x].classList.add('pacmanright')
+    }else if(pacman.direction === 'up'){
+      gameBoard[pacman.y][pacman.x].classList.add('pacmanup')
+    }else if(pacman.direction === 'down'){
+      gameBoard[pacman.y][pacman.x].classList.add('pacmandown')
+    }
+
+
+  }
+
+  function collision(){
+
+    if(pacman.phase === 'normal'){
+      if(['blinky', 'pinky', 'inky', 'clyde'].some(className => {
+        return gameBoard[pacman.y][pacman.x].classList.contains(className)
+      })) {
+        pacman.phase = 'dead'
+      }
+    }
+
+    if(pacman.phase === 'dead'){
+      lives --
+      document.querySelector('.lives').innerText = 'Lives:' + lives
+      clearInterval(ghostsTimer)
+      clearInterval(collisionTimer)
+      removeClasses()
+      startingPositions()
+      isPlaying = false
+    }
+
+    if(pacman.phase === 'hunt'){
+      if(['blinky', 'run'].every(className => {
+        return gameBoard[pacman.y][pacman.x].classList.contains(className)
+      })) {
+        ghosts[0].eaten = true
+      }
+
+      if(['pinky', 'run'].every(className => {
+        return gameBoard[pacman.y][pacman.x].classList.contains(className)
+      })) {
+        ghosts[1].eaten = true
+      }
+
+      if(['inky', 'run'].every(className => {
+        return gameBoard[pacman.y][pacman.x].classList.contains(className)
+      })) {
+        ghosts[2].eaten = true
+      }
+
+      if(['clyde', 'run'].every(className => {
+        return gameBoard[pacman.y][pacman.x].classList.contains(className)
+      })) {
+        ghosts[3].eaten = true
+      }
+    }
+
+    playerWon()
+
+    if(pelletcount < 1){
+      clearInterval(ghostsTimer)
+      clearInterval(collisionTimer)
+      removeClasses()
+      startingPositions()
+      isPlaying = false
+      document.querySelector('.nextlevel').innerText = 'LEVEL COMPLETE. CONTINUE?'
+
+    }
   }
 
 
-  drawGameBoard()
+
+  function removeClasses(){
+    for(let ghost = 0; ghost<ghosts.length; ghost++){
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('run')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('ghost')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('eyes')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('blinky')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('pinky')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('inky')
+      gameBoard[ghosts[ghost].y][ghosts[ghost].x].classList.remove('clyde')
+      gameBoard[pacman.y][pacman.x].classList.remove('pacmanleft')
+      gameBoard[pacman.y][pacman.x].classList.remove('pacmanright')
+      gameBoard[pacman.y][pacman.x].classList.remove('pacmanup')
+      gameBoard[pacman.y][pacman.x].classList.remove('pacmandown')
+    }
+  }
+
+
+  function playerWon(){
+    pelletcount = 0
+    for (let x= 0; x < gameBoard.length; x++){
+      const divRow = gameBoard[x]
+      for (let y = 0; y < divRow.length; y++){
+        if(divRow[y].classList.contains('pellet')){
+          pelletcount ++
+          console.log(pelletcount)
+        }
+      }
+    }
+  }
+
+  function drawBoard(){
+    generateDivs()
+    drawGameBoard()
+  }
+
+  drawBoard()
+
+  const startbutton = document.querySelector('.startbutton')
+  startbutton.addEventListener('click', startGame)
+
+  document.querySelector('.nextlevel').addEventListener('click', startGame)
 
   document.addEventListener('keyup', movePacman)
 
-  ghostsTimer = setInterval(ghostMovement, 500)
+  function startGame(){
+    pacman.phase = 'normal'
+    drawGameBoard()
+    isPlaying = true
+    ghostsTimer = setInterval(ghostMovement, 400)
+    collisionTimer = setInterval(collision, 60)
+
+  }
 
 
 
 
-//
-//
-//
-//
+
+
+
 })

@@ -3,13 +3,49 @@
 
 }
 
+body{
+  background: rgb(0,0,0);
+  background: radial-gradient(circle, rgba(0,0,0,0.8085609243697479) 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8141631652661064) 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.startbutton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 50px;
+  font-family: 'Press Start 2P', cursive;
+  color: #fafafa;
+  font-size: 12;
+}
+
+.nextlevel{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 50px;
+  font-family: 'Press Start 2P', cursive;
+  color: #fafafa;
+  font-size: 12;
+}
+
+
 .top{
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 500px;
   height: 50px;
-  font-family: Arial;
+  font-family: 'Press Start 2P', cursive;
+  color: #fafafa;
   font-size: 12;
 
     div{
@@ -18,8 +54,8 @@
       align-items: center;
       width: (100%/3);
       height: 100%;
-      border: 1px dashed grey;
     }
+
 
 }
 
@@ -28,31 +64,36 @@
   flex-wrap: wrap;
   width: 500px;
   height: 500px;
-  font-family: arial;
   font-size: 8px;
+
 }
 
 .tile{
   width: (100%/18);
   height: (100%/18);
-  border: 1px solid white;
-  transition: 0.2s;
+
 }
 
 .wall{
-  background-color: grey;
+  background-image: url(/Users/elliott/Development/Pac-Man/images/walltile.png);
+  background-size: contain;
+
 
 }
 
 .pellet{
-  background-color: darkgreen;
-  border-radius: 50%;
-  border: 70%;
+  background-image: url(/Users/elliott/Development/Pac-Man/images/dot.png);
+  background-repeat: no-repeat;
+  background-size: 25%;
+  background-position: center;
+
 }
 
 .powerup{
-  background-color: cyan;
-  border-radius: 50%;
+  background-image: url(/Users/elliott/Development/Pac-Man/images/dot.png);
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
 }
 
 .ghost{
@@ -61,26 +102,77 @@
   border-top-right-radius: 50%;
   border-bottom-left-radius: 0%;
   border-bottom-right-radius: 0%;
+  background-image: none;
 }
 
+.blinky{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/blinky.png);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+.pinky{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/pinky.png);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+.inky{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/inky.png);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+
+.clyde{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/clyde.png);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+
+
+
 .run{
-  background-color: blue;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  border-bottom-left-radius: 0%;
-  border-bottom-right-radius: 0%;
+  background-image: url(/Users/elliott/Development/Pac-Man/images/ghost-run.png);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
 }
 
 .eyes{
-  background-color: purple;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  border-bottom-left-radius: 0%;
-  border-bottom-right-radius: 0%;
+  background-image: url(/Users/elliott/Development/Pac-Man/images/eyes.png);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
 }
 
-.pacman{
-  background-color: yellow;
-  border-radius: 50%;
+.pacmanleft{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  transform: rotate(180deg);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
 
+.pacmanright{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+.pacmanup{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  transform: rotate(270deg);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+}
+.pacmandown{
+  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  transform: rotate(90deg);
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
 }
