@@ -360,6 +360,10 @@ document.addEventListener('DOMContentLoaded', () => {
       isPlaying = false
     }
 
+    if(lives === 0){
+      document.querySelector('.nextlevel').innerText = 'GAME OVER... PRESS START'
+    }
+
     if(pacman.phase === 'hunt'){
       if(['blinky', 'run'].every(className => {
         return gameBoard[pacman.y][pacman.x].classList.contains(className)
@@ -438,21 +442,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   drawBoard()
 
+  function startGame(){
+    if(lives === 0){
+      lives = 3
+      score = 0
+      document.querySelector('.lives').innerText = 'Lives:' + lives
+      document.querySelector('.score').innerText = score
+    }
+    pacman.phase = 'normal'
+    drawGameBoard()
+    gameBoard[pacman.y][pacman.x].classList.add('pacmanleft')
+    gameBoard[ghosts[0].y][ghosts[0].x].classList.add('blinky')
+    gameBoard[ghosts[1].y][ghosts[1].x].classList.add('pinky')
+    gameBoard[ghosts[2].y][ghosts[2].x].classList.add('inky')
+    gameBoard[ghosts[3].y][ghosts[3].x].classList.add('clyde')
+    isPlaying = true
+    ghostsTimer = setInterval(ghostMovement, 400)
+    collisionTimer = setInterval(collision, 60)
+  }
+
   const startbutton = document.querySelector('.startbutton')
   startbutton.addEventListener('click', startGame)
+
+  document.querySelector('.nextlevel').innerText = ''
 
   document.querySelector('.nextlevel').addEventListener('click', startGame)
 
   document.addEventListener('keyup', movePacman)
 
-  function startGame(){
-    pacman.phase = 'normal'
-    drawGameBoard()
-    isPlaying = true
-    ghostsTimer = setInterval(ghostMovement, 400)
-    collisionTimer = setInterval(collision, 60)
-
-  }
 
 
 
