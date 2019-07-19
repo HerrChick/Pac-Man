@@ -6,6 +6,8 @@ Pacman is a classic arcade style game where you must collect all the pellets on 
 
 This is my first project for GA's Software Development Intensive course, built using HTML 5, CSS3 (sass), and vanilla javascript.
 
+Play it on ![GitHub Pages](https://herrchick.github.io/Pac-Man/)
+
 ## Brief
 * To develop a pacman like game where:
   * A board can be cleared
