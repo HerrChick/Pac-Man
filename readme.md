@@ -7,10 +7,10 @@ Pacman is a classic arcade style game where you must collect all the pellets on 
 This is my first project for GA's Software Development Intensive course, built using HTML 5, CSS3 (sass), and vanilla javascript.
 
 ## Brief
-* To develop a pacman like game where
-* A board can be cleared
-* Score is displayed
-* Ghosts make an attempt to hunt pacman intelligently
+* To develop a pacman like game where:
+  * A board can be cleared
+  * Score is displayed
+  * Ghosts make an attempt to hunt pacman intelligently
 
 ## Technology Used
 * HTML 5
