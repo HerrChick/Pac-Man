@@ -171,4 +171,33 @@ if(pacman.phase === 'normal'){
 
 ```
 
-This is an excerpt showing the collision for if the ghosts hit pacman. It changes the class to dead and stops gampeplay. 
+This is an excerpt showing the collision for if the ghosts hit pacman. It changes the class to dead and stops gampeplay.
+
+## Finished product
+
+![Pacman Game - Elliott Chick](https://media.giphy.com/media/JRbRiUuAO9NsW57E4n/source.mp4)
+
+## Wins and Blockers
+* Wins
+  * Getting the ghost logic to work and being able to set different targets for each of the ghosts
+  * All ghosts change state when a power pellet is collected
+  * Ghosts can be eaten, and return to home for respawn
+
+* Blockers
+  * My first approach was flawed, so I had to rework the code halfway through losing time, I have been unable to add a lot of features I wished to add.
+
+## Future features
+* add more detailed animations using CCS Pseudoclasses
+* Add sound effects
+* Make the game more visually appealing, splash screen, game over indicators etc.
+
+## What I have learned
+
+This project was very challenging, but taught me a lot about array manipulation and the power of looping. How JS handles arguments, lots of DOM manipulation. And how to solve many, many, problems!
+
+The way I have built the code means that new features are not hard to add in, so it will be easy to work on in the future.
+
+## Known Bugs
+
+* Some minor scoreboard issues when re-starting the game
+* Sometimes the ghosts will (dependent on the situation) have 'infinity' for each option in their next move analysis, and disappear off the screen. I need to fix this behaviour.
