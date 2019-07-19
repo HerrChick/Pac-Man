@@ -1,6 +1,6 @@
 # Project 1 - Pac-Man
 
-##Overview
+## Overview
 
 Pacman is a classic arcade style game where you must collect all the pellets on the screen while avoiding the ghosts.
 
