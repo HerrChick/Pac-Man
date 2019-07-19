@@ -175,7 +175,7 @@ This is an excerpt showing the collision for if the ghosts hit pacman. It change
 
 ## Finished product
 
-![Pacman Game - Elliott Chick](https://media.giphy.com/media/JRbRiUuAO9NsW57E4n/source.mp4)
+![Pacman Game - Elliott Chick](https://media.giphy.com/media/JRbRiUuAO9NsW57E4n/200w_d.gif)
 
 ## Wins and Blockers
 * Wins

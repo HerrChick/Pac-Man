@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gameBoard[ghosts[2].y][ghosts[2].x].classList.add('inky')
     gameBoard[ghosts[3].y][ghosts[3].x].classList.add('clyde')
     isPlaying = true
-    ghostsTimer = setInterval(ghostMovement, 400)
+    ghostsTimer = setInterval(ghostMovement, 350)
     collisionTimer = setInterval(collision, 60)
   }
 

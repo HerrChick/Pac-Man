@@ -59,17 +59,17 @@ body {
   height: 5.5555555556%; }
 
 .wall {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/walltile.png);
+  background-image: url(../images/walltile.png);
   background-size: contain; }
 
 .pellet {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/dot.png);
+  background-image: url(../images/dot.png);
   background-repeat: no-repeat;
   background-size: 25%;
   background-position: center; }
 
 .powerup {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/dot.png);
+  background-image: url(../images/dot.png);
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center; }
@@ -83,63 +83,63 @@ body {
   background-image: none; }
 
 .blinky {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/blinky.png);
+  background-image: url(../images/blinky.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .pinky {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/pinky.png);
+  background-image: url(../images/pinky.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .inky {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/inky.png);
+  background-image: url(../images/inky.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .clyde {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/clyde.png);
+  background-image: url(../images/clyde.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .run {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/ghost-run.png);
+  background-image: url(../images/ghost-run.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .eyes {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/eyes.png);
+  background-image: url(../images/eyes.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .pacmanleft {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  background-image: url(../images/pacman.png);
   transform: rotate(180deg);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .pacmanright {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  background-image: url(../images/pacman.png);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .pacmanup {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  background-image: url(../images/pacman.png);
   transform: rotate(270deg);
   background-repeat: no-repeat;
   background-size: 80%;
   background-position: center; }
 
 .pacmandown {
-  background-image: url(/Users/elliott/Development/Pac-Man/images/pacman.png);
+  background-image: url(../images/pacman.png);
   transform: rotate(90deg);
   background-repeat: no-repeat;
   background-size: 80%;
